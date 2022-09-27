@@ -11,6 +11,7 @@
 
 import Foundation
 import CoreGraphics
+import UIKit
 
 
 @objc(ChartYAxisRenderer)
@@ -141,6 +142,18 @@ open class YAxisRenderer: NSObject, AxisRenderer
                              align: textAlign,
                              attributes: [.font: labelFont, .foregroundColor: labelTextColor])
         }
+        
+        let myTransformer = self.transformer
+    
+        for line in axis.limitLines {
+            let point = myTransformer?.pixelForValues(x: 0.0, y: line.limit)
+            
+            context.drawText(line.label,
+                             at: CGPoint(x: fixedPosition + xOffset, y: (point?.y ?? 0) + offset),
+                             align: textAlign,
+                             attributes: [.font: labelFont, .foregroundColor: UIColor.orange])
+        }
+
     }
     
     open func renderGridLines(context: CGContext)
